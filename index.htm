@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ronan Chettri - Personal Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        a {
+            text-decoration: none;
+            color: var(--primary);
+        }
+        
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--secondary);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        .nav-toggle-group {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-left: auto;
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            gap: 10px;
+        }
+        nav ul li {
+            margin-left: 0;
+        }
+        nav ul li:last-child {
+            margin-right: 24px;
+        }
+        .toggle-mode {
+            margin-left: 0;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        nav ul li a {
+            color: var(--text);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 150px 0 100px;
+            background-color: var(--secondary);
+            text-align: center;
+        }
+        
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .profile-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--secondary);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .hero h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: var(--text);
+        }
+        
+        .hero p {
+            font-size: 20px;
+            color: var(--text);
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--secondary);
+        }
+        
+        .btn-primary:hover {
+            background-color: #0055aa;
+            transform: translateY(-3px);
+        }
+        
+        .btn-outline {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: var(--secondary);
+            transform: translateY(-3px);
+        }
+        
+        /* About Section */
+        .about {
+            padding: 100px 0;
+            background-color: var(--secondary);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-size: 36px;
+            color: var(--text);
+            position: relative;
+            display: inline-block;
+            padding-bottom: 15px;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70px;
+            height: 3px;
+            background-color: var(--primary);
+        }
+        
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+        }
+        
+        .about-text {
+            flex: 1;
+        }
+        
+        .about-text h3 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: var(--text);
+        }
+        
+        .about-text p {
+            margin-bottom: 15px;
+            color: var(--text);
+        }
+        
+        .about-info {
+            margin-top: 30px;
+        }
+        
+        .info-item {
+            margin-bottom: 15px;
+            display: flex;
+        }
+        
+        .info-item strong {
+            min-width: 120px;
+            display: inline-block;
+            color: var(--text);
+        }
+        
+        /* Skills Section */
+        .skills {
+            padding: 100px 0;
+            background-color: var(--bg);
+        }
+        
+        .skills-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .skill-category {
+            background-color: var(--secondary);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .skill-category h3 {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: var(--text);
+            text-align: center;
+        }
+        
+        .skill-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .skill-item {
+            background-color: var(--bg);
+            color: var(--primary);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        /* Projects Section */
+        .projects {
+            padding: 100px 0;
+            background-color: var(--bg);
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .project-card {
+            background-color: var(--secondary);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .project-image {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+        }
+        
+        .project-info {
+            padding: 25px;
+        }
+        
+        .project-title {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: var(--text);
+        }
+        
+        .project-description {
+            color: var(--text);
+            margin-bottom: 20px;
+        }
+        
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .project-tag {
+            background-color: var(--bg);
+            color: var(--primary);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+        }
+        
+        /* Contact Section */
+        .contact {
+            padding: 100px 0;
+            background-color: var(--secondary);
+        }
+        
+        .contact-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+        }
+        
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background-color: var(--bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 20px;
+        }
+        
+        .contact-details h3 {
+            font-size: 18px;
+            margin-bottom: 5px;
+            color: var(--text);
+        }
+        
+        .contact-details p, .contact-details a {
+            color: var(--text);
+        }
+        
+        .contact-form form {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .form-group label {
+            font-weight: 500;
+            color: var(--text);
+        }
+        
+        .form-control {
+            padding: 12px 15px;
+            border: 1px solid #444;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            background-color: var(--bg);
+            color: var(--text);
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--secondary);
+            color: var(--text);
+            padding: 50px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-section h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--text);
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+        
+        .footer-about p {
+            margin-bottom: 20px;
+            color: #bbb;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--primary);
+            color: var(--secondary);
+            transform: translateY(-3px);
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links ul li a {
+            color: #bbb;
+            transition: color 0.3s;
+        }
+        
+        .footer-links ul li a:hover {
+            color: var(--text);
+        }
+        
+        .footer-contact p {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            color: #bbb;
+        }
+        
+        .footer-contact p i {
+            color: var(--primary);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bbb;
+            font-size: 14px;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .about-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .info-item {
+                justify-content: center;
+            }
+            
+            .timeline::after {
+                left: 31px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            
+            .timeline-item:nth-child(even) {
+                left: 0;
+            }
+            
+            .timeline-item:nth-child(odd) .timeline-content::after,
+            .timeline-item:nth-child(even) .timeline-content::after {
+                left: -39px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 10px;
+            }
+            
+            nav ul li {
+                margin: 0 10px;
+            }
+            
+            .hero h2 {
+                font-size: 36px;
+            }
+            
+            .hero p {
+                font-size: 18px;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .section-title h2 {
+                font-size: 30px;
+            }
+        }
+        :root {
+            --bg: #f8f9fa;
+            --text: #333;
+            --primary: #0066cc;
+            --secondary: #fff;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+        }
+        .dark-mode {
+            --bg: #18191a;
+            --text: #f8f9fa;
+            --primary: #4f8cff;
+            --secondary: #242526;
+        }
+        .dark-mode header, .dark-mode .about, .dark-mode .skills, .dark-mode .projects, .dark-mode .contact, .dark-mode footer {
+            background-color: var(--secondary);
+            color: var(--text);
+        }
+        .dark-mode .btn-primary {
+            background-color: var(--primary);
+            color: var(--secondary);
+        }
+        .toggle-mode {
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 20px;
+            margin-left: 10px;
+        }
+        .skill-item, .project-tag {
+            transition: transform 0.3s cubic-bezier(.4,2,.6,1), box-shadow 0.3s;
+        }
+        .skill-item:hover, .project-tag:hover {
+            transform: scale(1.12);
+            box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <h1>Ronan Chettri</h1>
+            </div>
+            <div class="nav-toggle-group">
+                <nav>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#skills">Skills</a></li>
+                        <li><a href="#projects">Projects</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+                <button class="toggle-mode" id="toggleModeBtn" title="Toggle dark/light mode">🌙</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero" data-aos="fade-up" data-aos-duration="1200">
+        <div class="container hero-content">
+            <img src="ron.jpeg" alt="Ronan Chettri" class="profile-image">
+            <h2>Hello, I'm Ronan Chettri</h2>
+            <p>I’m an IT enthusiast with a passion for technology and AI and lifelong learner</p>
+            <div class="hero-buttons">
+                <a href="#contact" class="btn btn-primary">Get In Touch</a>
+                <a href="#projects" class="btn btn-outline">View My Work</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about" data-aos="fade-up" data-aos-duration="1200">
+        <div class="container">
+            <div class="section-title">
+                <h2>About Me</h2>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>About Me</h3>
+                    <p>I am a passionate and creative individual with a keen interest in technology and design. My journey has been driven by curiosity and a desire to make a positive impact through innovative solutions. I thrive in collaborative environments and am always eager to learn new skills and take on new challenges.</p>
+                    <div class="about-info">
+                        <div class="info-item">
+                            <strong>Name:</strong>
+                            <span>Ronan Chettri</span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Location:</strong>
+                            <span>Kathmandu Dhapasi</span>
+                        </div>
+                        <div class="info-item">
+                            <strong>Email:</strong>
+                            <span>ronanchhetri@gmail.com</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills" data-aos="zoom-in" data-aos-duration="1200">
+        <div class="container">
+            <div class="section-title">
+                <h2>My Skills</h2>
+            </div>
+            <div class="skills-content">
+                <div class="skill-category" data-aos="fade-up" data-aos-delay="100">
+                    <h3>Languages & Databases</h3>
+                    <div class="skill-items">
+                        <span class="skill-item" data-aos="zoom-in" data-aos-delay="100">Python</span>
+                        <span class="skill-item" data-aos="fade-right" data-aos-delay="200">Java</span>
+                        <span class="skill-item" data-aos="fade-left" data-aos-delay="300">MySQL</span>
+                        <span class="skill-item" data-aos="zoom-in" data-aos-delay="400">HTML</span>
+                        <span class="skill-item" data-aos="fade-right" data-aos-delay="500">JS</span>
+                        <span class="skill-item" data-aos="fade-left" data-aos-delay="600">CSS basics</span>
+                    </div>
+                </div>
+                
+                <div class="skill-category" data-aos="fade-up" data-aos-delay="200">
+                    <h3>Frameworks & Technologies</h3>
+                    <div class="skill-items">
+                        <span class="skill-item" data-aos="fade-left" data-aos-delay="100">Tkinter</span>
+                        <span class="skill-item" data-aos="zoom-in" data-aos-delay="200">Java Swing</span>
+                        <span class="skill-item" data-aos="fade-right" data-aos-delay="300">GitHub</span>
+                    </div>
+                </div>
+                
+                <div class="skill-category" data-aos="fade-up" data-aos-delay="300">
+                    <h3>Tools & Platforms</h3>
+                    <div class="skill-items">
+                        <span class="skill-item" data-aos="zoom-in" data-aos-delay="100">LinkedIn</span>
+                        <span class="skill-item" data-aos="fade-right" data-aos-delay="200">Git</span>
+                        <span class="skill-item" data-aos="fade-left" data-aos-delay="300">GitHub</span>
+                        <span class="skill-item" data-aos="zoom-in" data-aos-delay="400">Terminal</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects" data-aos="zoom-in" data-aos-duration="1200">
+        <div class="container">
+            <div class="section-title">
+                <h2>Featured Projects</h2>
+            </div>
+            <div class="projects-grid">
+                <div class="project-card" data-aos="fade-up" data-aos-delay="100">
+                    <img src="githhub.png" alt="Project 1" class="project-image">
+                    <div class="project-info">
+                        <h3 class="project-title">Hospital Management System</h3>
+                        <div class="project-tags">
+                            <span class="project-tag" data-aos="zoom-in" data-aos-delay="100">Python</span>
+                            <span class="project-tag" data-aos="fade-left" data-aos-delay="200">sqlite3</span>
+                            <span class="project-tag" data-aos="fade-right" data-aos-delay="300">Tkinter</span>
+                        </div>
+                        <a href="https://github.com/Ronnaaannnn/hospitalmann" class="btn btn-outline">View Project</a>
+                    </div>
+                </div>
+                
+                <div class="project-card" data-aos="fade-up" data-aos-delay="200">
+                    <img src="githhub.png" alt="Project 2" class="project-image">
+                    <div class="project-info">
+                        <h3 class="project-title">Airlines Reservation System</h3>
+                        <div class="project-tags">
+                            <span class="project-tag" data-aos="fade-right" data-aos-delay="100">MySQL Workbench</span>
+                            <span class="project-tag" data-aos="zoom-in" data-aos-delay="200">Java</span>
+                            <span class="project-tag" data-aos="fade-left" data-aos-delay="300">Java Swing</span>
+                        </div>
+                        <a href="https://github.com/Akaayush14/WingsNepal" class="btn btn-outline">View Project</a>
+                    </div>
+                </div>
+                
+                <div class="project-card" data-aos="fade-up" data-aos-delay="300">
+                    <img src="githhub.png" alt="Project 3" class="project-image">
+                    <div class="project-info">
+                        <h3 class="project-title">Inventory Management System</h3>
+                        <div class="project-tags">
+                            <span class="project-tag" data-aos="zoom-in" data-aos-delay="100">Python</span>
+                            <span class="project-tag" data-aos="fade-left" data-aos-delay="200">sqlite3</span>
+                            <span class="project-tag" data-aos="fade-right" data-aos-delay="300">Tkinter</span>
+                        </div>
+                        <a href="https://github.com/Akaayush14/WingsNepal.git" class="btn btn-outline">View Project</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact" data-aos="fade-up" data-aos-duration="1200">
+        <div class="container">
+            <div class="section-title">
+                <h2>Get In Touch</h2>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Location</h3>
+                            <p>Nepal Kathmandu</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Email</h3>
+                            <p><a href="mailto:ronanchhetri@gmail.com">ronanchhetri@gmail.com</a></p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Phone</h3>
+                            <p><a href="tel:9765410700">9765410700</a></p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <form id="contactMailForm" onsubmit="return sendMail();">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" name="subject" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="content">Content</label>
+                            <textarea id="content" name="content" class="form-control" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer data-aos="fade-up" data-aos-duration="1200">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section footer-about">
+                    <h3>Ronan Chettri</h3>
+                    <p>I’m an IT enthusiast with a passion for technology and AI and lifelong learner</p>
+                    <div class="social-links">
+                        <a href="https://github.com/Ronnaaannnn" target="_blank"><i class="fab fa-github"></i></a>
+                        <a href="https://www.instagram.com/ronan.kc_/" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.facebook.com/ronan.kc.37/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.linkedin.com/in/ronan-chhetri-39819833b/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#skills">Skills</a></li>
+                        <li><a href="#projects">Projects</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section footer-contact">
+                    <h3>Contact Info</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Nepal Kathmandu</p>
+                    <p><i class="fas fa-envelope"></i> ronanchhetri@gmail.com</p>
+                    <p><i class="fas fa-phone"></i> 9765410700</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Ronan Chettri. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1200, easing: 'cubic-bezier(.4,2,.6,1)', once: true });
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Fixed header on scroll
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 50) {
+                header.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+            } else {
+                header.style.boxShadow = 'none';
+            }
+        });
+
+        function sendMail() {
+            var name = document.getElementById('name').value;
+            var subject = document.getElementById('subject').value;
+            var content = document.getElementById('content').value;
+            var mailto_link = 'mailto:ronanchhetri@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent('Name: ' + name + '\n\n' + content);
+            window.location.href = mailto_link;
+            return false;
+        }
+        // Dark/Light mode toggle
+        const toggleBtn = document.getElementById('toggleModeBtn');
+        const body = document.body;
+        function setMode(mode) {
+            if (mode === 'dark') {
+                body.classList.add('dark-mode');
+                toggleBtn.textContent = '☀️';
+            } else {
+                body.classList.remove('dark-mode');
+                toggleBtn.textContent = '🌙';
+            }
+            localStorage.setItem('theme', mode);
+        }
+        toggleBtn.addEventListener('click', () => {
+            const isDark = body.classList.contains('dark-mode');
+            setMode(isDark ? 'light' : 'dark');
+        });
+        // On load, set theme from localStorage
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) setMode(savedTheme);
+    </script>
+</body>
+</html>
