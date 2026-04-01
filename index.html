@@ -147,7 +147,7 @@ body.touch-mode #touch-press-ring{display:block}
 
 /* ═══════════════════ CANVASES ══════════════════════════ */
 #sparkle-c{position:fixed;inset:0;z-index:99997;pointer-events:none}
-#neural-c{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.48;transition:opacity .6s}
+#neural-c{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.38;transition:opacity .6s}
 [data-theme=light] #neural-c{opacity:.17}
 .scanlines{
   position:fixed;inset:0;z-index:1;pointer-events:none;
@@ -867,24 +867,71 @@ footer{background:var(--bg1);border-top:1px solid var(--bd);padding:48px 40px 26
   function resizeNC() { NW = nc.width = window.innerWidth; NH = nc.height = window.innerHeight; }
   resizeNC(); window.addEventListener('resize', resizeNC);
   var nodes = [];
-  for (var ni = 0; ni < 80; ni++)
-    nodes.push({ x: Math.random()*window.innerWidth, y: Math.random()*window.innerHeight, vx:(Math.random()-.5)*.42, vy:(Math.random()-.5)*.42, r:Math.random()*2+1 });
+  // 200 nodes on desktop, 80 on mobile
+  var nodeCount = isTouchDevice ? 40 : 90;
+  for (var ni = 0; ni < nodeCount; ni++)
+    nodes.push({
+      x: Math.random()*window.innerWidth,
+      y: Math.random()*window.innerHeight,
+      vx:(Math.random()-.5)*.45,
+      vy:(Math.random()-.5)*.45,
+      r: Math.random()*2.5+1.2,
+      pulse: Math.random()*Math.PI*2  // phase offset for glow pulse
+    });
   var nmx = -999, nmy = -999;
   function getPR() { return getComputedStyle(html).getPropertyValue('--pr').trim() || '#00e5ff'; }
+  function getAC() { return getComputedStyle(html).getPropertyValue('--ac').trim() || '#a020ff'; }
   (function nLoop() {
     nctx.clearRect(0, 0, NW, NH);
     var col = getPR();
+    var col2 = getAC();
+    var t = Date.now() * 0.001;
     nodes.forEach(function(n) {
       var dx=n.x-nmx, dy=n.y-nmy, d=Math.sqrt(dx*dx+dy*dy);
-      if (d < 130) { n.vx+=(dx/d)*.26; n.vy+=(dy/d)*.26; }
+      if (d < 160) { n.vx+=(dx/d)*.28; n.vy+=(dy/d)*.28; }
       n.vx*=.994; n.vy*=.994; n.x+=n.vx; n.y+=n.vy;
       if(n.x<0||n.x>NW) n.vx*=-1; if(n.y<0||n.y>NH) n.vy*=-1;
+      n.pulse += 0.018;
     });
+    // Draw connections
     for (var i=0;i<nodes.length;i++) for(var j=i+1;j<nodes.length;j++) {
       var dx=nodes[i].x-nodes[j].x, dy=nodes[i].y-nodes[j].y, d=Math.sqrt(dx*dx+dy*dy);
-      if(d<155){ nctx.beginPath(); nctx.strokeStyle=col; nctx.globalAlpha=(1-d/155)*.5; nctx.lineWidth=.6; nctx.moveTo(nodes[i].x,nodes[i].y); nctx.lineTo(nodes[j].x,nodes[j].y); nctx.stroke(); }
+      if(d<180){
+        var alpha = (1-d/180)*0.65;
+        nctx.beginPath();
+        nctx.strokeStyle = col;
+        nctx.globalAlpha = alpha;
+        nctx.lineWidth = (1-d/180)*1.4;
+        nctx.shadowBlur = 0;
+        nctx.moveTo(nodes[i].x,nodes[i].y);
+        nctx.lineTo(nodes[j].x,nodes[j].y);
+        nctx.stroke();
+      }
     }
-    nodes.forEach(function(n){ nctx.globalAlpha=.75; nctx.beginPath(); nctx.arc(n.x,n.y,n.r,0,Math.PI*2); nctx.fillStyle=col; nctx.fill(); });
+    // Draw nodes with glow — desktop only gets full glow
+    nodes.forEach(function(n, idx){
+      var glowPulse = 0.5 + 0.5*Math.sin(n.pulse);
+      var useCol = (idx % 7 === 0) ? col2 : col;
+      var glowSize = n.r * (8 + 6*glowPulse);
+      // Outer glow halo
+      var grad = nctx.createRadialGradient(n.x,n.y,0, n.x,n.y,glowSize);
+      grad.addColorStop(0, useCol.replace(')', ',0.55)').replace('rgb','rgba').replace('#00e5ff','rgba(0,229,255,0.55)').replace('#a020ff','rgba(160,32,255,0.55)').replace('#005ce0','rgba(0,92,224,0.55)').replace('#7200dd','rgba(114,0,221,0.55)'));
+      grad.addColorStop(1, 'rgba(0,0,0,0)');
+      nctx.globalAlpha = 0.7 * glowPulse;
+      nctx.fillStyle = grad;
+      nctx.beginPath();
+      nctx.arc(n.x, n.y, glowSize, 0, Math.PI*2);
+      nctx.fill();
+      // Core bright dot
+      nctx.globalAlpha = 0.85 + 0.15*glowPulse;
+      nctx.shadowBlur = 18 + 12*glowPulse;
+      nctx.shadowColor = useCol;
+      nctx.beginPath();
+      nctx.arc(n.x, n.y, n.r + 0.8*glowPulse, 0, Math.PI*2);
+      nctx.fillStyle = useCol;
+      nctx.fill();
+      nctx.shadowBlur = 0;
+    });
     nctx.globalAlpha=1;
     requestAnimationFrame(nLoop);
   })();
