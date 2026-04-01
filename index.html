@@ -270,6 +270,75 @@ nav a .nn{color:var(--pr);font-size:9px;margin-right:3px;opacity:.65}
 .avr:nth-child(3) .avr-d{background:var(--ac2);box-shadow:0 0 10px var(--ac2)}
 .av-img{position:absolute;inset:0;border-radius:50%;overflow:hidden;border:2px solid var(--pr);box-shadow:var(--gw2),inset 0 0 40px rgba(var(--pr-rgb),.1)}
 .av-img img{width:100%;height:100%;object-fit:cover;filter:saturate(.8);transition:filter .5s}
+.av-img .gl-r,.av-img .gl-b{position:absolute;inset:0;background-size:cover;background-position:center;border-radius:50%;opacity:0;pointer-events:none}
+.av-img .gl-r{mix-blend-mode:screen;filter:saturate(2)}
+.av-img .gl-b{mix-blend-mode:screen;filter:saturate(2) hue-rotate(180deg)}
+.av-img.glitching img{animation:gl-main .35s steps(1) infinite}
+.av-img.glitching .gl-r{opacity:.75;animation:gl-r .35s steps(1) infinite}
+.av-img.glitching .gl-b{opacity:.65;animation:gl-b .35s steps(1) infinite}
+.av-img.glitching::after{content:'';position:absolute;inset:0;border-radius:50%;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,229,255,.07) 3px,rgba(0,229,255,.07) 4px);animation:gl-scan .15s linear infinite;pointer-events:none;z-index:3}
+@keyframes gl-main{
+  0%{filter:saturate(.8)}
+  15%{filter:saturate(1.5) hue-rotate(6deg);transform:translate(-4px,0) skewX(-2deg)}
+  30%{filter:brightness(1.5);transform:translate(4px,0);clip-path:inset(20% 0 30% 0)}
+  45%{filter:saturate(1.8) hue-rotate(-8deg);transform:translate(-2px,1px)}
+  60%{clip-path:inset(55% 0 5% 0);filter:brightness(1.6);transform:translate(3px,0)}
+  75%{clip-path:none;filter:saturate(.5);transform:none}
+  90%{filter:saturate(1.4) hue-rotate(4deg);transform:translate(-3px,0) skewX(-1deg)}
+  100%{filter:saturate(.8);transform:none;clip-path:none}
+}
+@keyframes gl-r{
+  0%{transform:translate(-5px,0);opacity:.7}
+  33%{transform:translate(5px,-2px);opacity:.5;clip-path:inset(15% 0 50% 0)}
+  66%{transform:translate(-3px,3px);opacity:.85;clip-path:inset(40% 0 15% 0)}
+  100%{transform:translate(-5px,0);opacity:.7;clip-path:none}
+}
+@keyframes gl-b{
+  0%{transform:translate(5px,0);opacity:.6}
+  33%{transform:translate(-5px,2px);opacity:.8;clip-path:inset(50% 0 10% 0)}
+  66%{transform:translate(3px,-3px);opacity:.5;clip-path:inset(8% 0 55% 0)}
+  100%{transform:translate(5px,0);opacity:.6;clip-path:none}
+}
+@keyframes gl-scan{0%{background-position:0 0}100%{background-position:0 40px}}
+/* ── AVATAR GLITCH ── */
+.av-img .gl-r,.av-img .gl-b{position:absolute;inset:0;background-size:cover;background-position:center;border-radius:50%;opacity:0;pointer-events:none;transition:opacity .1s}
+.av-img .gl-r{background-image:url('ron.jpeg');mix-blend-mode:screen;filter:saturate(2) hue-rotate(0deg)}
+.av-img .gl-b{background-image:url('ron.jpeg');mix-blend-mode:screen;filter:saturate(2) hue-rotate(180deg)}
+.av-img.glitching img{animation:gl-main .4s steps(1) infinite}
+.av-img.glitching .gl-r{opacity:.75;animation:gl-r .4s steps(1) infinite}
+.av-img.glitching .gl-b{opacity:.65;animation:gl-b .4s steps(1) infinite}
+.av-img.glitching::after{content:'';position:absolute;inset:0;border-radius:50%;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,229,255,.06) 3px,rgba(0,229,255,.06) 4px);animation:gl-scan .18s linear infinite;pointer-events:none;z-index:3}
+@keyframes gl-main{
+  0%{filter:saturate(.8)}
+  10%{filter:saturate(1.4) hue-rotate(5deg);transform:translate(-3px,0) skewX(-2deg)}
+  20%{filter:saturate(.6) brightness(1.4);transform:translate(3px,0)}
+  30%{filter:saturate(1.8) hue-rotate(-8deg);transform:translate(-2px,1px) skewX(1deg)}
+  40%{clip-path:inset(20% 0 30% 0);filter:saturate(.8);transform:translate(4px,0)}
+  50%{clip-path:inset(60% 0 5% 0);filter:brightness(1.6);transform:translate(-3px,0)}
+  60%{clip-path:none;filter:saturate(1.2);transform:none}
+  70%{filter:saturate(.5) brightness(.9);transform:translate(2px,-1px)}
+  80%{filter:saturate(1.6) hue-rotate(10deg);transform:translate(-4px,0) skewX(-3deg)}
+  90%{filter:saturate(.8);transform:none}
+  100%{filter:saturate(.8)}
+}
+@keyframes gl-r{
+  0%{transform:translate(-4px,0);opacity:.7}
+  25%{transform:translate(4px,-2px);opacity:.5;clip-path:inset(15% 0 50% 0)}
+  50%{transform:translate(-2px,3px);opacity:.8;clip-path:inset(40% 0 20% 0)}
+  75%{transform:translate(5px,0);opacity:.4;clip-path:none}
+  100%{transform:translate(-4px,0);opacity:.7}
+}
+@keyframes gl-b{
+  0%{transform:translate(4px,0);opacity:.6}
+  25%{transform:translate(-4px,2px);opacity:.8;clip-path:inset(50% 0 10% 0)}
+  50%{transform:translate(2px,-3px);opacity:.5;clip-path:inset(10% 0 60% 0)}
+  75%{transform:translate(-5px,0);opacity:.7;clip-path:none}
+  100%{transform:translate(4px,0);opacity:.6}
+}
+@keyframes gl-scan{
+  0%{background-position:0 0}
+  100%{background-position:0 100%}
+}
 .av-scan{position:absolute;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--pr),transparent);opacity:.55;animation:avscan 3s linear infinite}
 @keyframes avscan{0%{top:0;opacity:0}10%{opacity:.7}90%{opacity:.7}100%{top:100%;opacity:0}}
 .hud{position:absolute;font-family:var(--fm);font-size:10px;letter-spacing:2px;color:var(--pr);background:var(--surface);border:1px solid var(--bd);padding:5px 11px;border-radius:2px;backdrop-filter:blur(8px);white-space:nowrap;animation:hudp 2s ease-in-out infinite alternate}
@@ -600,8 +669,10 @@ footer{background:var(--bg1);border-top:1px solid var(--bd);padding:48px 40px 26
           <div class="avr"><div class="avr-d"></div></div>
           <div class="avr"><div class="avr-d"></div></div>
         </div>
-        <div class="av-img">
+        <div class="av-img" id="av-img">
           <img src="ron.jpeg" alt="Ronan Chhetri">
+          <div class="gl-r" style="background-image:url('ron.jpeg')"></div>
+          <div class="gl-b" style="background-image:url('ron.jpeg')"></div>
           <div class="av-scan"></div>
         </div>
         <div class="hud tl">ID<span>RC_2006</span></div>
@@ -1234,6 +1305,39 @@ footer{background:var(--bg1);border-top:1px solid var(--bd);padding:48px 40px 26
       }, { passive: true });
       c.addEventListener('touchend', function(){ setTimeout(function(){ c.style.transform=''; c.style.borderColor=''; c.style.boxShadow=''; }, 300); }, { passive: true });
     });
+  }
+
+  // ── AVATAR GLITCH ──────────────────────────────────────
+  var avImg = document.getElementById('av-img');
+  var glitchTimer = null;
+  function startGlitch() {
+    if (!avImg) return;
+    avImg.classList.add('glitching');
+    clearTimeout(glitchTimer);
+    // Random burst: glitch for 300-700ms then pause, repeat
+    function burst() {
+      avImg.classList.add('glitching');
+      var onTime = 200 + Math.random() * 500;
+      glitchTimer = setTimeout(function() {
+        avImg.classList.remove('glitching');
+        var offTime = 80 + Math.random() * 200;
+        glitchTimer = setTimeout(burst, offTime);
+      }, onTime);
+    }
+    burst();
+  }
+  function stopGlitch() {
+    if (!avImg) return;
+    clearTimeout(glitchTimer);
+    avImg.classList.remove('glitching');
+  }
+  if (avImg) {
+    avImg.addEventListener('mouseenter', startGlitch);
+    avImg.addEventListener('mouseleave', stopGlitch);
+    avImg.addEventListener('touchstart', function(e) {
+      startGlitch();
+      setTimeout(stopGlitch, 1200);
+    }, { passive: true });
   }
 
   // ── LOADER — runs last so all functions exist ───────────
