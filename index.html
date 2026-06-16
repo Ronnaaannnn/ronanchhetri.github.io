@@ -1663,7 +1663,7 @@ function renderCursor() {
 }
 renderCursor();
 
-document.querySelectorAll('a, button, .glass, .skill-badge').forEach(el => {
+document.querySelectorAll('a, button, .glass, .skill-badge, .cert-card, .contact-info-item, .form-input').forEach(el => {
   el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
   el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
 });
