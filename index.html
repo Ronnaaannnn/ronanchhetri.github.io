@@ -111,37 +111,26 @@ body::before {
 .cursor-dot {
   position: fixed;
   top: 0; left: 0;
-  width: 8px; height: 8px;
-  background: var(--accent);
-  border-radius: 50%;
+  width: 64px; height: 64px;
+  background-image: url('rocket.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
   pointer-events: none;
   z-index: 100000;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 0 20px var(--accent-glow), 0 0 40px var(--accent-glow);
-  transition: width 0.3s var(--ease-spring), height 0.3s var(--ease-spring), background 0.3s;
-  mix-blend-mode: screen;
+  /* Shift slightly so the cursor point aligns better with the rocket nose */
+  transform: translate(-30%, -30%);
+  transition: width 0.3s var(--ease-spring), height 0.3s var(--ease-spring);
 }
 .cursor-ring {
-  position: fixed;
-  top: 0; left: 0;
-  width: 36px; height: 36px;
-  border: 1.5px solid var(--accent);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 99999;
-  transform: translate(-50%, -50%);
-  opacity: 0.5;
-  transition: width 0.4s var(--ease-out), height 0.4s var(--ease-out), opacity 0.3s, border-color 0.3s;
+  display: none; /* Hidden since we use the rocket now */
 }
 .cursor-hover .cursor-dot {
-  width: 20px; height: 20px;
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 0 30px var(--accent-glow), 0 0 60px var(--accent-glow);
+  width: 90px; height: 90px; /* Expand slightly more on hover */
+  background-image: url('hover.png');
 }
 .cursor-hover .cursor-ring {
-  width: 60px; height: 60px;
-  opacity: 0.8;
-  border-width: 2px;
+  display: none;
 }
 
 /* ═══════════════════ $1000 GLASS CARD ═══════════════════ */
@@ -850,6 +839,83 @@ textarea.form-input { min-height: 140px; line-height: 1.6; }
 .btn-send::before { content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0.2); opacity: 0; transition: opacity 0.3s; }
 .btn-send:hover::before { opacity: 1; }
 
+/* ═══════════════════ MOBILE NAV ═══════════════════ */
+.hbg {
+  display: none;
+  background: transparent;
+  border: none;
+  width: 44px; height: 44px;
+  position: relative;
+  z-index: 10001;
+}
+.hbg span {
+  display: block;
+  width: 24px; height: 2px;
+  background: #fff;
+  position: absolute;
+  left: 10px;
+  transition: all 0.3s;
+}
+.hbg span:nth-child(1) { top: 14px; }
+.hbg span:nth-child(2) { top: 21px; }
+.hbg span:nth-child(3) { top: 28px; }
+.hbg.open span:nth-child(1) { top: 21px; transform: rotate(45deg); }
+.hbg.open span:nth-child(2) { opacity: 0; }
+.hbg.open span:nth-child(3) { top: 21px; transform: rotate(-45deg); }
+
+.mob-nav {
+  position: fixed;
+  inset: 0;
+  background: rgba(7,7,10,0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.4s;
+  transform: translateY(-20px);
+}
+.mob-nav.active {
+  opacity: 1; pointer-events: all; transform: translateY(0);
+}
+.mob-link {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  font-weight: 800;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+.mob-link:hover { color: var(--accent); text-shadow: 0 0 15px var(--accent-glow); }
+
+/* ═══════════════════ RESPONSIVE ═══════════════════ */
+@media (max-width: 860px) {
+  .nav-links { display: none; }
+  .hbg { display: block; }
+  .nav-wrapper { padding: 0 20px; }
+  
+  .hero-grid { grid-template-columns: 1fr; text-align: center; gap: 40px; padding-top: 120px; }
+  .hero-desc { margin: 0 auto 32px; }
+  .hero-buttons { justify-content: center; }
+  .avatar-frame { margin: 0 auto; width: 300px; height: 300px; }
+  
+  .about-grid { grid-template-columns: 1fr; }
+  
+  .section { padding: 80px 20px; }
+  .section-title { font-size: 40px; }
+  
+  .project-grid { grid-template-columns: 1fr; }
+  .cert-grid { grid-template-columns: 1fr; }
+  
+  .footer-inner { flex-direction: column; text-align: center; gap: 20px; }
+  .social-link { width: 40px; height: 40px; }
+}
+
 </style>
 </head>
 <body>
@@ -875,8 +941,21 @@ textarea.form-input { min-height: 140px; line-height: 1.6; }
       <a href="#contact" class="nav-link" data-section="contact">Contact</a>
       <div class="nav-indicator" id="navIndicator"></div>
     </div>
+    <button class="hbg" id="hbgBtn" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
+
+<!-- MOBILE NAV -->
+<div class="mob-nav" id="mobNav">
+  <a href="#hero" class="mob-link">Home</a>
+  <a href="#about" class="mob-link">About</a>
+  <a href="#skills" class="mob-link">Skills</a>
+  <a href="#projects" class="mob-link">Projects</a>
+  <a href="#certifications" class="mob-link">Certifications</a>
+  <a href="#contact" class="mob-link">Contact</a>
+</div>
 
 <!-- HERO -->
 <section id="hero">
@@ -1174,10 +1253,12 @@ const canvas = document.getElementById('bg-canvas');
 const scene = new THREE.Scene();
 
 // Add starfield
+const isMobile = window.innerWidth <= 860;
 const starGeometry = new THREE.BufferGeometry();
 const starMaterial = new THREE.PointsMaterial({color: 0xffffff, size: 0.15, transparent: true, opacity: 0.6});
 const starVertices = [];
-for(let i=0; i<3000; i++) {
+const starCount = isMobile ? 1000 : 3000;
+for(let i=0; i<starCount; i++) {
   const x = (Math.random() - 0.5) * 300;
   const y = (Math.random() - 0.5) * 300;
   const z = (Math.random() - 0.5) * 300;
@@ -1241,7 +1322,8 @@ function createGalaxy(x, y, z, colorHex, sizeMult) {
 
 // Generate galaxies deep in the background, pushed toward the outer corners
 const gColors = [0xc084fc, 0x22d3ee, 0x60a5fa, 0x4ade80, 0xfbbf24, 0xff7eb3];
-for(let i=0; i<20; i++) { // Reduced count
+const galaxyCount = isMobile ? 5 : 20;
+for(let i=0; i<galaxyCount; i++) { // Reduced count
   // Force X and Y to be away from the center (150 to 550 units out)
   const signX = Math.random() < 0.5 ? -1 : 1;
   const signY = Math.random() < 0.5 ? -1 : 1;
@@ -1256,9 +1338,9 @@ for(let i=0; i<20; i++) { // Reduced count
 }
 
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: !isMobile });
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio, 2));
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.0;
 
@@ -1270,7 +1352,8 @@ const planetsData = [];
 
 // Helper to create detailed planet
 function createDetailedPlanet(size, textureUrl, x, y, z, options = {}) {
-  const geo = new THREE.SphereGeometry(size, 64, 64);
+  const detail = isMobile ? 32 : 64;
+  const geo = new THREE.SphereGeometry(size, detail, detail);
   
   const matOptions = { 
     roughness: 0.8,
@@ -1290,7 +1373,7 @@ function createDetailedPlanet(size, textureUrl, x, y, z, options = {}) {
   group.position.set(x, y, z);
   
   // Add atmospheric glow
-  const glowGeo = new THREE.SphereGeometry(size * 1.05, 32, 32);
+  const glowGeo = new THREE.SphereGeometry(size * 1.05, detail/2, detail/2);
   const glowMat = new THREE.MeshBasicMaterial({
     color: options.glowColor || options.color || 0x2b82c9,
     transparent: true,
@@ -1304,7 +1387,7 @@ function createDetailedPlanet(size, textureUrl, x, y, z, options = {}) {
   const moons = [];
   if (options.moons) {
     options.moons.forEach(m => {
-      const mGeo = new THREE.SphereGeometry(m.size, 32, 32);
+      const mGeo = new THREE.SphereGeometry(m.size, detail/2, detail/2);
       const mMat = new THREE.MeshStandardMaterial({ 
         map: textureLoader.load(baseUrl + 'moon_1024.jpg'),
         roughness: 0.9 
@@ -1321,7 +1404,7 @@ function createDetailedPlanet(size, textureUrl, x, y, z, options = {}) {
   }
   
   if(options.hasRing) {
-    const ringGeo = new THREE.RingGeometry(size * 1.4, size * 2.4, 64);
+    const ringGeo = new THREE.RingGeometry(size * 1.4, size * 2.4, detail);
     const ringMat = new THREE.MeshStandardMaterial({ 
       color: options.ringColor || options.color || 0xeaddb5, 
       side: THREE.DoubleSide, 
@@ -1629,6 +1712,24 @@ document.querySelectorAll('.skill-categories > div').forEach(el => skillObserver
 // Nav scroll
 const navbar = document.getElementById('navbar');
 window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 50); });
+
+// Mobile Nav Toggle
+const hbgBtn = document.getElementById('hbgBtn');
+const mobNav = document.getElementById('mobNav');
+if (hbgBtn && mobNav) {
+  hbgBtn.addEventListener('click', () => {
+    hbgBtn.classList.toggle('open');
+    mobNav.classList.toggle('active');
+  });
+  
+  // Close when clicking a link
+  document.querySelectorAll('.mob-link').forEach(link => {
+    link.addEventListener('click', () => {
+      hbgBtn.classList.remove('open');
+      mobNav.classList.remove('active');
+    });
+  });
+}
 
 // ═══════════════════ CONTACT MAILTO ═══════════════════
 function sendContactMail() {
