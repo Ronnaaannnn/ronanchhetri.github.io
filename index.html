@@ -111,13 +111,13 @@ body::before {
 .cursor-dot {
   position: fixed;
   top: 0; left: 0;
-  width: 64px; height: 64px;
+  width: 96px; height: 96px;
   background-image: url('rocket.png');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   pointer-events: none;
-  z-index: 100000;
+  z-index: 999999;
   /* Shift slightly so the cursor point aligns better with the rocket nose */
   transform: translate(-30%, -30%);
   transition: width 0.3s var(--ease-spring), height 0.3s var(--ease-spring);
@@ -126,7 +126,7 @@ body::before {
   display: none; /* Hidden since we use the rocket now */
 }
 .cursor-hover .cursor-dot {
-  width: 90px; height: 90px; /* Expand slightly more on hover */
+  width: 135px; height: 135px; /* Expand slightly more on hover */
   background-image: url('hover.png');
 }
 .cursor-hover .cursor-ring {
