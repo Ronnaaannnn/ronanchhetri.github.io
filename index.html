@@ -931,7 +931,7 @@ textarea.form-input { min-height: 140px; line-height: 1.6; }
 <!-- NAVIGATION -->
 <nav class="nav-wrapper" id="navbar">
   <div class="nav-inner">
-    <a href="#hero" class="nav-logo">RC.AI</a>
+    <a href="#hero" class="nav-logo">RONAN</a>
     <div class="nav-links" id="navLinks">
       <a href="#hero" class="nav-link active" data-section="hero">Home</a>
       <a href="#about" class="nav-link" data-section="about">About</a>
@@ -1210,7 +1210,7 @@ textarea.form-input { min-height: 140px; line-height: 1.6; }
 <footer>
   <div class="footer-inner">
     <div>
-      <div class="nav-logo" style="margin-bottom:12px">RC.AI</div>
+      <div class="nav-logo" style="margin-bottom:12px">RONAN</div>
       <p style="color:var(--text-muted);font-size:14px">Engineering the future of intelligent systems.</p>
     </div>
     <div style="display:flex;gap:16px">
@@ -1422,6 +1422,49 @@ function createDetailedPlanet(size, textureUrl, x, y, z, options = {}) {
   planetsData.push({ group, mesh, glow: glowMesh, moons });
   return group;
 }
+
+// Create the Sun first
+function createSun() {
+  const detail = isMobile ? 32 : 64;
+  const sunSize = 5; // Slightly smaller sun!
+  const sunGeo = new THREE.SphereGeometry(sunSize, detail, detail);
+  
+  // Load sun texture from base64 data
+  const sunTexture = textureLoader.load(textureData['sun']);
+  
+  const sunMat = new THREE.MeshBasicMaterial({ 
+    map: sunTexture
+  });
+  
+  const sunMesh = new THREE.Mesh(sunGeo, sunMat);
+  
+  const sunGroup = new THREE.Group();
+  sunGroup.add(sunMesh);
+  sunGroup.position.set(-10, 2, -5); // Sun on the left side
+  
+  // Add soft, subtle glowing layers around the sun
+  for (let i = 1; i <= 3; i++) {
+    const glowGeo = new THREE.SphereGeometry(sunSize * (1.2 + i * 0.3), detail/2, detail/2);
+    const glowMat = new THREE.MeshBasicMaterial({
+      color: 0xffcc66,
+      transparent: true,
+      opacity: 0.15 / i,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+    const glowMesh = new THREE.Mesh(glowGeo, glowMat);
+    sunGroup.add(glowMesh);
+  }
+  
+  // Add a point light from the sun
+  const sunPointLight = new THREE.PointLight(0xffffff, 1.5, 200);
+  sunGroup.add(sunPointLight);
+  
+  scene.add(sunGroup);
+  planetsData.push({ group: sunGroup, mesh: sunMesh, glow: null, moons: [] });
+  return sunGroup;
+}
+createSun();
 
 // Planets array with detailed textures and moons
 createDetailedPlanet(1.2, textureData['mercury'], 6, 2, -10, { color: 0xffffff, glowColor: 0x8c8c8c }); // Mercury
